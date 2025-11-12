@@ -12,37 +12,34 @@ uniform mediump vec2 pixelSize;
 void main(void)
 {
     if (opacity == 0.0) {
-        mediump vec4 front = texture2D(samplerFront, vTex);
-        gl_FragColor = front;
+        gl_FragColor = texture2D(samplerFront, vTex);
         return;
     }
 
     mediump vec4 front = texture2D(samplerFront, vTex);
 
-    if (front.a == 0.0) {
-        gl_FragColor = front;
-        return;
-    }
-
-    mediump vec2 layoutSize = abs(vec2(layoutEnd.x - layoutStart.x, (layoutEnd.y - layoutStart.y)));
-    mediump vec2 texelSize = abs(srcOriginEnd - srcOriginStart) / layoutSize;
-    mediump vec2 pixelSize = vec2(texelSize.x, -texelSize.y);
-
-    mediump float angle_rad = radians(angle);
-    mediump vec2 offset = vec2(cos(angle_rad), sin(angle_rad)) * pixelSize * amount;
-    mediump vec4 offset_sample = texture2D(samplerFront, vTex + offset);
-
     mediump vec2 object_center = (srcOriginStart + srcOriginEnd) * 0.5;
     mediump vec2 to_pixel = vTex - object_center;
+
     mediump float pixel_angle = atan2(to_pixel.y, to_pixel.x);
-    mediump float angle_diff = abs(pixel_angle - angle_rad);
+    mediump float center_angle = radians(angle);
+    mediump float angle_diff = abs(pixel_angle - center_angle);
     mediump float normalized_diff = min(angle_diff, radians(360.0) - angle_diff);
-    mediump float cone_factor = 1.0 - smoothstep(0.0, radians(cone), normalized_diff);
 
-    mediump float inline_alpha = front.a * (1.0 - offset_sample.a) * opacity * cone_factor;
+    mediump float half_cone = radians(cone) * 0.5;
+    mediump float rim_strength = 1.0 - smoothstep(0.0, half_cone, normalized_diff);
 
-    mediump vec3 normal_blend = mix(front.rgb, rim_color, inline_alpha);
-    mediump vec3 additive_blend = front.rgb + rim_color * inline_alpha;
+    mediump vec2 layoutSize = abs(vec2(layoutEnd.x - layoutStart.x, layoutEnd.y - layoutStart.y));
+    mediump vec2 texelSize = abs(srcOriginEnd - srcOriginStart) / layoutSize;
+    mediump float distance_from_center = length(to_pixel / texelSize);
+    mediump float rim_threshold = amount * 0.5;
+    mediump float rim_falloff = 1.0;
+    mediump float distance_factor = 1.0 - smoothstep(rim_threshold - rim_falloff, rim_threshold + rim_falloff, distance_from_center);
+
+    mediump float rim_alpha = rim_strength * distance_factor * front.a * opacity;
+
+    mediump vec3 normal_blend = mix(front.rgb, rim_color, rim_alpha);
+    mediump vec3 additive_blend = front.rgb + rim_color * rim_alpha;
     mediump vec3 result_rgb = mix(normal_blend, additive_blend, blending);
 
     gl_FragColor = vec4(result_rgb, front.a);
