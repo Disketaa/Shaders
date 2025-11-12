@@ -6,11 +6,15 @@
   "text": {
     "effects": {
       "disketaa_rim_inline": {
-        "name": "Rim Inline",
+        "name": "Rim inline",
         "description": "",
         "parameters": {
           "rim_color": {
             "name": "Color",
+            "desc": ""
+          },
+          "opacity": {
+            "name": "Opacity",
             "desc": ""
           },
           "angle": {

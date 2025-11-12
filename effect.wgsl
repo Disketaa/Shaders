@@ -7,6 +7,7 @@
 
 struct ShaderParams {
     rim_color : vec3<f32>,
+    opacity : f32,
     angle : f32
 };
 
@@ -31,7 +32,7 @@ fn main(input : FragmentInput) -> FragmentOutput {
     let offset_coord = clamp(uv + offset, vec2<f32>(0.001), vec2<f32>(0.999));
     let offset_sample = textureSample(textureFront, samplerFront, offset_coord);
 
-    let inline_alpha = front.a * (1.0 - offset_sample.a);
+    let inline_alpha = front.a * (1.0 - offset_sample.a) * shaderParams.opacity;
 
     let result_rgb = mix(front.rgb, shaderParams.rim_color, inline_alpha);
 
