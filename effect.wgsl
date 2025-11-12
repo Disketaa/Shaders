@@ -26,15 +26,15 @@ fn main(input : FragmentInput) -> FragmentOutput {
     let front = textureSample(textureFront, samplerFront, uv);
 
     let angle_rad = radians(shaderParams.angle);
-
     let offset = vec2<f32>(cos(angle_rad), sin(angle_rad)) * pixelSize * 2.0;
-
     let offset_coord = clamp(uv + offset, vec2<f32>(0.001), vec2<f32>(0.999));
     let offset_sample = textureSample(textureFront, samplerFront, offset_coord);
 
     let inline_alpha = front.a * (1.0 - offset_sample.a) * shaderParams.opacity;
+    let should_skip = select(0.0, 1.0, front.a == 0.0 || shaderParams.opacity == 0.0);
+    let effective_alpha = inline_alpha * (1.0 - should_skip);
 
-    let result_rgb = mix(front.rgb, shaderParams.rim_color, inline_alpha);
+    let result_rgb = mix(front.rgb, shaderParams.rim_color, effective_alpha);
 
     var output : FragmentOutput;
     output.color = vec4<f32>(result_rgb, front.a);
