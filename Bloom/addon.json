@@ -8,11 +8,11 @@
 
   "supported-renderers": ["webgl", "webgpu"],
 
-  "version": "0.4",
+  "version": "0.5",
   "author": "Disketaa",
   "website": "https://github.com/Disketaa/Shaders/tree/main/Bloom",
   "documentation": "https://www.construct.net/en/make-games/addons/1514/bloom/documentation",
-  "description": "A post-process glow that mimics intense brightness and light scattering.",
+  "description": "Creates a post-process glow that mimics intense brightness and light scattering.",
   "file-list": [
     "lang/en-US.json",
     "lang/ru-RU.json",

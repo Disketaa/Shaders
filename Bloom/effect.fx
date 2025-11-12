@@ -1,20 +1,52 @@
-﻿uniform mediump float intensity;
+﻿#ifdef GL_FRAGMENT_PRECISION_HIGH
+#define highmedp highp
+#else
+#define highmedp mediump
+#endif
+
+precision lowp float;
+
+varying mediump vec2 vTex;
+uniform lowp sampler2D samplerFront;
+uniform mediump vec2 srcStart;
+uniform mediump vec2 srcEnd;
+uniform mediump vec2 srcOriginStart;
+uniform mediump vec2 srcOriginEnd;
+uniform mediump vec2 layoutStart;
+uniform mediump vec2 layoutEnd;
+uniform lowp sampler2D samplerBack;
+uniform lowp sampler2D samplerDepth;
+uniform mediump vec2 destStart;
+uniform mediump vec2 destEnd;
+uniform highmedp float seconds;
+uniform mediump vec2 pixelSize;
+uniform mediump float layerScale;
+uniform mediump float layerAngle;
+uniform mediump float devicePixelRatio;
+uniform mediump float zNear;
+uniform mediump float zFar;
+
+uniform mediump float intensity;
 uniform mediump float brightness;
 uniform mediump float falloff;
 uniform mediump float threshold;
 uniform mediump float samples;
 
-varying mediump vec2 vTex;
-uniform lowp sampler2D samplerFront;
-
-const highp mat2 ANGLE_MAT = mat2(-0.7373688, -0.6754904, 0.6754904, -0.7373688);
+const highp mat2 ANGLE_MAT = mat2(-0.7373688, 0.6754904, -0.6754904, -0.7373688);
+const mediump vec3 WEIGHTS = vec3(0.2126, 0.7152, 0.0722);
 
 mediump float luminance(mediump vec3 rgb) {
-    const mediump vec3 WEIGHTS = vec3(0.2126, 0.7152, 0.0722);
     return dot(rgb, WEIGHTS);
 }
 
+mediump vec4 safeTextureSample(mediump vec2 coord) {
+    mediump vec2 clampedCoord = clamp(coord, vec2(0.001), vec2(0.999));
+    return texture2D(samplerFront, clampedCoord);
+}
+
 void main(void) {
+    mediump vec2 texelSize = pixelSize;
+
     mediump vec4 blur = vec4(0.0);
     mediump float totalWeight = 0.0;
 
@@ -22,25 +54,24 @@ void main(void) {
     mediump float scale = radius * inversesqrt(samples);
 
     highp vec2 point = vec2(scale, 0.0);
-    ivec2 textureSize2d = textureSize(samplerFront, 0);
-    mediump vec2 texelSize = 1.0 / vec2(textureSize2d);
     mediump float rad = 1.0;
 
-    for (int i = 0; i < int(samples); i++) {
-        point *= ANGLE_MAT;
+    const int MAX_SAMPLES = 64;
+    int sampleCount = int(clamp(samples, 1.0, float(MAX_SAMPLES)));
+
+    for (int i = 0; i < MAX_SAMPLES; i++) {
+        if (i >= sampleCount) break;
+
+        point = ANGLE_MAT * point;
         rad += 1.0 / rad;
 
         mediump vec2 coord = vTex + point * (rad - 1.0) * texelSize;
-
-        mediump vec4 sampleColor;
-        if (coord.x >= 0.0 && coord.x <= 1.0 && coord.y >= 0.0 && coord.y <= 1.0) {
-            sampleColor = texture2D(samplerFront, coord);
-        } else {
-            sampleColor = vec4(0.0);
-        }
+        mediump vec4 sampleColor = safeTextureSample(coord);
 
         mediump float lum = luminance(sampleColor.rgb);
-         mediump float bloomFactor = smoothstep(threshold, threshold + falloff, lum);
+        mediump float thresholdLow = threshold;
+        mediump float thresholdHigh = threshold + falloff;
+        mediump float bloomFactor = smoothstep(thresholdLow, thresholdHigh, lum);
 
         mediump vec4 bloomSample = vec4(sampleColor.rgb * bloomFactor, bloomFactor) * brightness;
         mediump float weight = 1.0 / rad;
