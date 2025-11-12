@@ -12,9 +12,10 @@
   "author": "Disketaa",
   "website": "https://123",
   "documentation": "https://123",
-  "description": "123",
+  "description": "Creates a rim light effect that illuminates the edges within a cone.",
   "file-list": [
     "lang/en-US.json",
+    "lang/ru-RU.json",
     "addon.json",
     "effect.fx",
     "effect.wgsl"
@@ -39,28 +40,34 @@
       "interpolatable": true
     },
     {
-      "id": "blending",
-      "type": "percent",
-      "initial-value": 1.0,
-      "uniform": "blending"
-    },
-    {
       "id": "opacity",
       "type": "percent",
       "initial-value": 0.5,
       "uniform": "opacity"
     },
     {
-      "id": "amount",
-      "type": "float",
+      "id": "blending",
+      "type": "percent",
       "initial-value": 1.0,
-      "uniform": "amount"
+      "uniform": "blending"
     },
     {
       "id": "angle",
       "type": "float",
       "initial-value": 0.0,
       "uniform": "angle"
+    },
+    {
+      "id": "cone",
+      "type": "float",
+      "initial-value": 1.0,
+      "uniform": "cone"
+    },
+    {
+      "id": "amount",
+      "type": "float",
+      "initial-value": 1.0,
+      "uniform": "amount"
     }
   ]
 }

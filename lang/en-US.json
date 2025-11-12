@@ -7,27 +7,31 @@
     "effects": {
       "disketaa_rim_inline": {
         "name": "Rim inline",
-        "description": "",
+        "description": "Creates a rim light effect that illuminates the edges within a cone.",
         "parameters": {
           "rim_color": {
             "name": "Color",
             "desc": "Sets the color of the rim inline effect."
           },
-          "blending": {
-            "name": "Blending",
-            "desc": "Controls the mix between normal and additive color blending."
-          },
           "opacity": {
             "name": "Opacity",
             "desc": "Controls the overall visibility of the rim inline effect."
           },
-          "amount": {
-            "name": "Amount",
-            "desc": "Controls the thickness of the rim inline effect in pixels."
+          "blending": {
+            "name": "Blending",
+            "desc": "Controls the mix between normal and additive color blending."
           },
           "angle": {
             "name": "Angle",
             "desc": "Sets the direction angle for the rim inline effect in degrees."
+          },
+          "cone": {
+            "name": "Cone",
+            "desc": "Controls the angular spread of the rim light in degrees."
+          },
+          "amount": {
+            "name": "Amount",
+            "desc": "Controls the thickness of the rim inline effect in pixels."
           }
         }
       }
