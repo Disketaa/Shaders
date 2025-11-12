@@ -44,10 +44,6 @@ void main(void) {
     }
 
     mediump float brightness = dot(front.rgb, vec3(0.299, 0.587, 0.114));
-    if (brightness <= threshold) {
-        gl_FragColor = front;
-        return;
-    }
 
     mediump float angle_rad = radians(angle);
     mediump float cone_rad = radians(cone);
@@ -70,7 +66,8 @@ void main(void) {
     mediump float amount_norm = amount * 0.01;
     mediump float amount_factor = 1.0 - smoothstep(amount_norm - smooth_range, amount_norm + smooth_range, 1.0 - normalized_dist);
 
-    mediump float threshold_factor = step(threshold, brightness);
+    mediump float threshold_factor = 1.0 - smoothstep(threshold - 0.01, threshold + 0.01, brightness);
+
     mediump float rim_alpha = opacity * cone_factor * amount_factor * threshold_factor * front.a;
     mediump vec3 normal_blend = mix(front.rgb, rim_color, rim_alpha);
     mediump vec3 additive_blend = front.rgb + rim_color * rim_alpha;

@@ -34,10 +34,6 @@ fn main(input : FragmentInput) -> FragmentOutput {
     }
 
     let brightness = dot(front.rgb, vec3<f32>(0.299, 0.587, 0.114));
-    if (brightness <= shaderParams.threshold) {
-        output.color = front;
-        return output;
-    }
 
     let angle_rad = radians(shaderParams.angle);
     let cone_rad = radians(shaderParams.cone);
@@ -57,7 +53,8 @@ fn main(input : FragmentInput) -> FragmentOutput {
     let amount_norm = shaderParams.amount * 0.01;
     let amount_factor = 1.0 - smoothstep(amount_norm - smooth_range, amount_norm + smooth_range, 1.0 - normalized_dist);
 
-    let threshold_factor = step(shaderParams.threshold, brightness);
+    let threshold_factor = 1.0 - smoothstep(shaderParams.threshold - 0.01, shaderParams.threshold + 0.01, brightness);
+
     let rim_alpha = shaderParams.opacity * cone_factor * amount_factor * threshold_factor * front.a;
     let normal_blend = mix(front.rgb, shaderParams.rim_color, rim_alpha);
     let additive_blend = front.rgb + shaderParams.rim_color * rim_alpha;
