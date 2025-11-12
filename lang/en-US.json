@@ -21,6 +21,10 @@
             "name": "Blending",
             "desc": "Controls the mix between normal and additive color blending."
           },
+          "threshold": {
+            "name": "Threshold",
+            "desc": "Controls which colors are affected by the rim effect based on brightness."
+          },
           "angle": {
             "name": "Angle",
             "desc": "Sets the direction angle for the rim inline effect in degrees."

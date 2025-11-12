@@ -1,6 +1,7 @@
 ﻿uniform lowp vec3 rim_color;
 uniform mediump float opacity;
 uniform mediump float blending;
+uniform mediump float threshold;
 uniform mediump float angle;
 uniform mediump float cone;
 uniform mediump float amount;
@@ -12,7 +13,7 @@ uniform mediump vec2 pixelSize;
 
 void main(void)
 {
-    if (opacity == 0.0 || amount == 0.0) {
+    if (opacity == 0.0 || amount == 0.0 || threshold > 1.0) {
         mediump vec4 front = texture2D(samplerFront, vTex);
         gl_FragColor = front;
         return;
@@ -21,6 +22,14 @@ void main(void)
     mediump vec4 front = texture2D(samplerFront, vTex);
 
     if (front.a == 0.0) {
+        gl_FragColor = front;
+        return;
+    }
+
+    mediump float brightness = dot(front.rgb, vec3(0.299, 0.587, 0.114));
+    mediump float threshold_factor = 1.0 - smoothstep(threshold, threshold + 0.1, brightness);
+
+    if (threshold_factor <= 0.0) {
         gl_FragColor = front;
         return;
     }
@@ -46,7 +55,7 @@ void main(void)
     mediump float amount_edge1 = mix(amount * 0.01, amount * 0.01, min(sharpness, 1.0));
     mediump float amount_factor = 1.0 - smoothstep(amount_edge0 - amount_smooth_range, amount_edge1 + amount_smooth_range, 1.0 - normalized_distance);
 
-    mediump float inline_alpha = front.a * opacity * cone_factor * amount_factor;
+    mediump float inline_alpha = front.a * opacity * cone_factor * amount_factor * threshold_factor;
 
     mediump vec3 normal_blend = mix(front.rgb, rim_color, inline_alpha);
     mediump vec3 additive_blend = front.rgb + rim_color * inline_alpha;

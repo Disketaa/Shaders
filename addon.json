@@ -42,7 +42,7 @@
     {
       "id": "opacity",
       "type": "percent",
-      "initial-value": 0.5,
+      "initial-value": 1.0,
       "uniform": "opacity"
     },
     {
@@ -50,6 +50,12 @@
       "type": "percent",
       "initial-value": 1.0,
       "uniform": "blending"
+    },
+    {
+      "id": "threshold",
+      "type": "percent",
+      "initial-value": 0.5,
+      "uniform": "threshold"
     },
     {
       "id": "angle",
@@ -60,19 +66,19 @@
     {
       "id": "cone",
       "type": "float",
-      "initial-value": 1.0,
+      "initial-value": 90.0,
       "uniform": "cone"
     },
     {
       "id": "amount",
       "type": "float",
-      "initial-value": 1.0,
+      "initial-value": 100.0,
       "uniform": "amount"
     },
     {
       "id": "sharpness",
       "type": "percent",
-      "initial-value": 0.0,
+      "initial-value": 25.0,
       "uniform": "sharpness"
     }
   ]
