@@ -33,26 +33,16 @@ fn main(input : FragmentInput) -> FragmentOutput {
 
     let front = textureSample(textureFront, samplerFront, uv);
 
-    let layoutSize = abs(c3Params.layoutEnd - c3Params.layoutStart);
-    let texelSize = abs(c3Params.srcOriginEnd - c3Params.srcOriginStart) / layoutSize;
-    let pixelSize = vec2<f32>(texelSize.x, -texelSize.y);
-
-    let angle_rad = radians(shaderParams.angle);
-    let direction_to_light = vec2<f32>(cos(angle_rad), sin(angle_rad));
-    let offset = direction_to_light * pixelSize * shaderParams.amount;
-
-    let offset_coord = clamp(uv + offset, vec2<f32>(0.001), vec2<f32>(0.999));
-    let offset_sample = textureSample(textureFront, samplerFront, offset_coord);
-
     let object_center = (c3Params.srcOriginStart + c3Params.srcOriginEnd) * 0.5;
     let to_pixel = uv - object_center;
+
+    let light_direction = vec2<f32>(cos(radians(shaderParams.angle)), sin(radians(shaderParams.angle)));
     let pixel_direction = normalize(to_pixel);
-
-    let cos_angle = dot(direction_to_light, pixel_direction);
+    let cos_angle = dot(light_direction, pixel_direction);
     let cone_cos = cos(radians(shaderParams.cone));
-    let cone_factor = 1.0 - smoothstep(cone_cos, 1.0, cos_angle);
+    let cone_factor = smoothstep(cone_cos, 1.0, cos_angle);
 
-    let inline_alpha = front.a * (1.0 - offset_sample.a) * shaderParams.opacity * cone_factor;
+    let inline_alpha = front.a * shaderParams.opacity * cone_factor;
 
     let normal_blend = mix(front.rgb, shaderParams.rim_color, inline_alpha);
     let additive_blend = front.rgb + shaderParams.rim_color * inline_alpha;

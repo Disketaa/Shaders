@@ -24,25 +24,15 @@ void main(void)
         return;
     }
 
-    mediump vec2 layoutSize = abs(vec2(layoutEnd.x - layoutStart.x, (layoutEnd.y - layoutStart.y)));
-    mediump vec2 texelSize = abs(srcOriginEnd - srcOriginStart) / layoutSize;
-    mediump vec2 pixelSize = vec2(texelSize.x, -texelSize.y);
-
-    mediump float angle_rad = radians(angle);
-
-    mediump vec2 direction_to_light = vec2(cos(angle_rad), sin(angle_rad));
     mediump vec2 to_pixel = vTex - (srcOriginStart + srcOriginEnd) * 0.5;
+
+    mediump vec2 light_direction = vec2(cos(radians(angle)), sin(radians(angle)));
     mediump vec2 pixel_direction = normalize(to_pixel);
-
-    mediump float cos_angle = dot(direction_to_light, pixel_direction);
+    mediump float cos_angle = dot(light_direction, pixel_direction);
     mediump float cone_cos = cos(radians(cone));
-    mediump float cone_factor = 1.0 - smoothstep(cone_cos, 1.0, cos_angle);
+    mediump float cone_factor = smoothstep(cone_cos, 1.0, cos_angle);
 
-    mediump vec2 offset = direction_to_light * pixelSize * amount;
-    mediump vec2 offset_coord = clamp(vTex + offset, vec2(0.001), vec2(0.999));
-    mediump vec4 offset_sample = texture2D(samplerFront, offset_coord);
-
-    mediump float inline_alpha = front.a * (1.0 - offset_sample.a) * opacity * cone_factor;
+    mediump float inline_alpha = front.a * opacity * cone_factor;
 
     mediump vec3 normal_blend = mix(front.rgb, rim_color, inline_alpha);
     mediump vec3 additive_blend = front.rgb + rim_color * inline_alpha;
