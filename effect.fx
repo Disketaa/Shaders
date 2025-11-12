@@ -29,15 +29,18 @@ void main(void)
     mediump vec2 pixelSize = vec2(texelSize.x, -texelSize.y);
 
     mediump float angle_rad = radians(angle);
-    mediump vec2 offset = vec2(cos(angle_rad), sin(angle_rad)) * pixelSize * amount;
-    mediump vec4 offset_sample = texture2D(samplerFront, vTex + offset);
 
-    mediump vec2 object_center = (srcOriginStart + srcOriginEnd) * 0.5;
-    mediump vec2 to_pixel = vTex - object_center;
-    mediump float pixel_angle = atan2(to_pixel.y, to_pixel.x);
-    mediump float angle_diff = abs(pixel_angle - angle_rad);
-    mediump float normalized_diff = min(angle_diff, radians(360.0) - angle_diff);
-    mediump float cone_factor = 1.0 - smoothstep(0.0, radians(cone), normalized_diff);
+    mediump vec2 direction_to_light = vec2(cos(angle_rad), sin(angle_rad));
+    mediump vec2 to_pixel = vTex - (srcOriginStart + srcOriginEnd) * 0.5;
+    mediump vec2 pixel_direction = normalize(to_pixel);
+
+    mediump float cos_angle = dot(direction_to_light, pixel_direction);
+    mediump float cone_cos = cos(radians(cone));
+    mediump float cone_factor = 1.0 - smoothstep(cone_cos, 1.0, cos_angle);
+
+    mediump vec2 offset = direction_to_light * pixelSize * amount;
+    mediump vec2 offset_coord = clamp(vTex + offset, vec2(0.001), vec2(0.999));
+    mediump vec4 offset_sample = texture2D(samplerFront, offset_coord);
 
     mediump float inline_alpha = front.a * (1.0 - offset_sample.a) * opacity * cone_factor;
 

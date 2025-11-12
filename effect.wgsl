@@ -36,17 +36,21 @@ fn main(input : FragmentInput) -> FragmentOutput {
     let layoutSize = abs(c3Params.layoutEnd - c3Params.layoutStart);
     let texelSize = abs(c3Params.srcOriginEnd - c3Params.srcOriginStart) / layoutSize;
     let pixelSize = vec2<f32>(texelSize.x, -texelSize.y);
-    let offset = vec2<f32>(cos(radians(shaderParams.angle)), sin(radians(shaderParams.angle))) * pixelSize * shaderParams.amount;
+
+    let angle_rad = radians(shaderParams.angle);
+    let direction_to_light = vec2<f32>(cos(angle_rad), sin(angle_rad));
+    let offset = direction_to_light * pixelSize * shaderParams.amount;
 
     let offset_coord = clamp(uv + offset, vec2<f32>(0.001), vec2<f32>(0.999));
     let offset_sample = textureSample(textureFront, samplerFront, offset_coord);
 
     let object_center = (c3Params.srcOriginStart + c3Params.srcOriginEnd) * 0.5;
     let to_pixel = uv - object_center;
-    let pixel_angle = atan2(to_pixel.y, to_pixel.x);
-    let angle_diff = abs(pixel_angle - radians(shaderParams.angle));
-    let normalized_diff = min(angle_diff, radians(360.0) - angle_diff);
-    let cone_factor = 1.0 - smoothstep(0.0, radians(shaderParams.cone), normalized_diff);
+    let pixel_direction = normalize(to_pixel);
+
+    let cos_angle = dot(direction_to_light, pixel_direction);
+    let cone_cos = cos(radians(shaderParams.cone));
+    let cone_factor = 1.0 - smoothstep(cone_cos, 1.0, cos_angle);
 
     let inline_alpha = front.a * (1.0 - offset_sample.a) * shaderParams.opacity * cone_factor;
 
