@@ -7,7 +7,7 @@
     "effects": {
       "disketaa_angular-rim-light": {
         "name": "Angular rim light",
-        "description": "Creates directional lighting that illuminates pixels within a cone.",
+        "description": "Creates a directional lighting that illuminates pixels within a cone.",
         "parameters": {
           "rim_color": {
             "name": "Color",

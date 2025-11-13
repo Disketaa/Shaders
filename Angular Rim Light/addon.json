@@ -8,11 +8,11 @@
 
   "supported-renderers": ["webgl", "webgpu"],
 
-  "version": "0.2",
+  "version": "0.3",
   "author": "Disketaa",
   "website": "https://github.com/Disketaa/Shaders/tree/main/Angular%20Rim%20Light",
-  "documentation": "https://123",
-  "description": "Creates directional lighting that illuminates pixels within a cone.",
+  "documentation": "https://www.construct.net/en/make-games/addons/1518/angular-rim-light/documentation",
+  "description": "Creates a directional lighting that illuminates pixels within a cone.",
   "file-list": [
     "lang/en-US.json",
     "lang/ru-RU.json",
