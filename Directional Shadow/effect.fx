@@ -15,7 +15,7 @@ uniform mediump vec2 srcOriginEnd;
 uniform mediump vec2 layoutStart;
 uniform mediump vec2 layoutEnd;
 
-void main(void) {
+void main() {
   if (shadow_opacity <= 0.0) {
     gl_FragColor = texture2D(samplerFront, vTex);
     return;
@@ -25,35 +25,42 @@ void main(void) {
   mediump vec2 texelSize = abs(srcOriginEnd - srcOriginStart) / layoutSize;
   mediump vec2 pixelSize = vec2(texelSize.x, -texelSize.y);
 
-  mediump vec2 object_size = srcOriginEnd - srcOriginStart;
-  mediump vec2 center = srcOriginStart + object_size * vec2(horizontal_center, vertical_center);
-
   lowp vec4 object_color = texture2D(samplerFront, vTex);
   lowp vec4 shadow_sample = vec4(0.0);
 
-  mediump vec2 offset_uv = vTex;
+  mediump vec2 object_size = srcOriginEnd - srcOriginStart;
+  mediump vec2 object_coord = (vTex - srcOriginStart) / object_size;
+  
 
+  mediump vec2 offset_coord = object_coord;
   if (horizontal_offset != 0.0 || vertical_offset != 0.0) {
-    offset_uv = vTex + vec2(-horizontal_offset * pixelSize.x, vertical_offset * pixelSize.y);
+    offset_coord += vec2(-horizontal_offset * texelSize.x, -vertical_offset * texelSize.y);
   }
 
-  mediump vec2 processed_coord = offset_uv;
-
+  mediump vec2 scaled_coord = offset_coord;
   if (horizontal_scale != 1.0 || vertical_scale != 1.0) {
-      processed_coord = center + (processed_coord - center) / vec2(horizontal_scale, vertical_scale);
+    mediump vec2 scale_center = vec2(horizontal_center, vertical_center);
+    scaled_coord = scale_center + (scaled_coord - scale_center) / vec2(horizontal_scale, vertical_scale);
   }
 
+  mediump vec2 rotated_coord = scaled_coord;
   if (angle != 0.0) {
     mediump float rad = radians(angle);
     mediump float cosA = cos(rad);
     mediump float sinA = sin(rad);
-    processed_coord = center + vec2(
-      cosA * (processed_coord.x - center.x) - sinA * (processed_coord.y - center.y),
-      sinA * (processed_coord.x - center.x) + cosA * (processed_coord.y - center.y)
+    mediump vec2 center_offset = rotated_coord - vec2(horizontal_center, vertical_center);
+    rotated_coord = vec2(horizontal_center, vertical_center) + vec2(
+      cosA * center_offset.x - sinA * center_offset.y,
+      sinA * center_offset.x + cosA * center_offset.y
     );
   }
 
-  shadow_sample = texture2D(samplerFront, processed_coord);
+  mediump vec2 shadow_coord = srcOriginStart + rotated_coord * object_size;
+
+  if (rotated_coord.x >= 0.0 && rotated_coord.x <= 1.0 && 
+      rotated_coord.y >= 0.0 && rotated_coord.y <= 1.0) {
+    shadow_sample = texture2D(samplerFront, shadow_coord);
+  }
 
   if (sharpness > 0.0) {
     mediump float sharpness_cutoff = 0.5 + min(sharpness, 1.0) * 0.5;
