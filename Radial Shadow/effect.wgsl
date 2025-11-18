@@ -38,10 +38,8 @@ fn main(input : FragmentInput) -> FragmentOutput {
   let center = c3Params.srcOriginStart + object_size * vec2<f32>(shaderParams.horizontal_center, shaderParams.vertical_center);
 
   var offset_uv = input.fragUV;
-  let offset_vec = vec2<f32>(-shaderParams.horizontal_offset * pixelSize.x, shaderParams.vertical_offset * pixelSize.y);
-
   if (shaderParams.horizontal_offset != 0.0 || shaderParams.vertical_offset != 0.0) {
-    offset_uv = offset_uv + offset_vec;
+    offset_uv = offset_uv + vec2<f32>(-shaderParams.horizontal_offset * pixelSize.x, shaderParams.vertical_offset * pixelSize.y);
   }
 
   let scale_vec = vec2<f32>(shaderParams.horizontal_scale, shaderParams.vertical_scale);
@@ -51,11 +49,11 @@ fn main(input : FragmentInput) -> FragmentOutput {
   let dist_vec = abs(base_coord - center);
   let dist = length(dist_vec / src_half_size);
 
-  let smooth_range = mix(0.5, 0.001, min(shaderParams.sharpness, 1.0));
+  let clamped_sharpness = min(shaderParams.sharpness, 1.0);
+  let smooth_range = mix(0.5, 0.001, clamped_sharpness);
   var circle_alpha = 1.0 - smoothstep(1.0 - smooth_range, 1.0 + smooth_range, dist);
 
   if (shaderParams.sharpness > 0.0) {
-    let clamped_sharpness = min(shaderParams.sharpness, 1.0);
     let sharpness_cutoff = 0.5 + clamped_sharpness * 0.5;
     circle_alpha = mix(circle_alpha, select(0.0, 1.0, circle_alpha >= sharpness_cutoff), clamped_sharpness);
   }
