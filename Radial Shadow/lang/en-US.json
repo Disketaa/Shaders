@@ -7,7 +7,7 @@
     "effects": {
       "disketaa_radial-shadow": {
         "name": "Radial shadow",
-        "description": "Creates a radial shadow underneath the image.",
+        "description": "Creates a radial shadow underneath the object.",
         "parameters": {
           "shadow_color": {
             "name": "Color",
@@ -39,11 +39,11 @@
           },
           "horizontal_offset": {
             "name": "Horizontal offset",
-            "desc": "Sets the horizontal offset of the shadow relative to the original image."
+            "desc": "Sets the horizontal offset of the shadow relative to the object."
           },
           "vertical_offset": {
             "name": "Vertical offset",
-            "desc": "Sets the vertical offset of the shadow relative to the original image."
+            "desc": "Sets the vertical offset of the shadow relative to the object."
           }
         }
       }

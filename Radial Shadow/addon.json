@@ -11,8 +11,8 @@
   "version": "0.1",
   "author": "Disketaa",
   "website": "https://github.com/Disketaa/Shaders/tree/main/Radial%20Shadow",
-  "documentation": "https://www.construct.net/en/make-games/addons/1516/shadow/documentation",
-  "description": "Creates a radial shadow underneath the image.",
+  "documentation": "https://www.construct.net/en/make-games/addons/1521/radial-shadow",
+  "description": "Creates a radial shadow underneath the object.",
   "file-list": [
     "lang/en-US.json",
     "lang/ru-RU.json",
