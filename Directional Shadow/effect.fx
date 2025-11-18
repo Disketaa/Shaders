@@ -10,6 +10,10 @@ uniform lowp float vertical_scale;
 uniform mediump float horizontal_offset;
 uniform mediump float vertical_offset;
 uniform sampler2D samplerFront;
+uniform mediump vec2 srcOriginStart;
+uniform mediump vec2 srcOriginEnd;
+uniform mediump vec2 layoutStart;
+uniform mediump vec2 layoutEnd;
 
 void main(void) {
   if (shadow_opacity <= 0.0) {
