@@ -54,7 +54,9 @@ float smoothNoise(vec2 p) {
 }
 
 vec2 c3_getLayoutPos(vec2 fragUV) {
-	return mix(layoutStart, layoutEnd, fragUV);
+  vec2 srcOriginSize = srcOriginEnd - srcOriginStart;
+  vec2 n = (fragUV - srcOriginStart) / srcOriginSize;
+  return mix(layoutStart, layoutEnd, n);
 }
 
 void main(void) {
