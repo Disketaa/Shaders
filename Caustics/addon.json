@@ -8,7 +8,7 @@
 
   "supported-renderers": ["webgl", "webgpu"],
 
-  "version": "0.3",
+  "version": "0.4",
   "author": "Disketaa",
   "website": "https://github.com/Disketaa/Shaders/tree/main/Caustics",
   "documentation": "https://www.construct.net/en/make-games/addons/1515/caustics/documentation",

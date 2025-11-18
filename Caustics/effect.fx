@@ -25,11 +25,7 @@ uniform vec2 layoutEnd;
 uniform float seconds;
 uniform vec2 pixelSize;
 
-const vec3 WEIGHTS = vec3(0.2126, 0.7152, 0.0722);
 
-float luminance(vec3 rgb) {
-	return dot(rgb, WEIGHTS);
-}
 
 vec4 calculateCaustic(inout vec4 k_param, mat3 matrix_param, float scale_param) {
 	mat3 scaled_matrix = matrix_param * scale_param;
