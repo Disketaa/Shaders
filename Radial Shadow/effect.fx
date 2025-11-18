@@ -54,21 +54,20 @@ void main(void) {
     return;
   }
 
-  mediump float combined_alpha = 0.0;
   const int NUM_SAMPLES = 8;
-  mediump float angle_step = 6.2831853 / float(NUM_SAMPLES);
+  const mediump float INV_SAMPLES = 0.125;
+  const mediump float ANGLE_STEP = 0.7853982;
   mediump vec2 src_half_size_abs = abs(src_half_size);
   mediump float sample_radius = min(src_half_size_abs.x, src_half_size_abs.y) * 0.3;
+  mediump float combined_alpha = 0.0;
 
   for (int i = 0; i < NUM_SAMPLES; i++) {
-    mediump float angle = float(i) * angle_step;
-    mediump vec2 sample_offset = vec2(cos(angle), sin(angle)) * sample_radius;
-    mediump vec2 sample_pos = center + sample_offset;
-    lowp vec4 sample = texture2D(samplerFront, sample_pos);
-    combined_alpha += sample.a;
+    mediump float angle = float(i) * ANGLE_STEP;
+    mediump vec2 sample_pos = center + vec2(cos(angle), sin(angle)) * sample_radius;
+    combined_alpha += texture2D(samplerFront, sample_pos).a;
   }
 
-  combined_alpha /= float(NUM_SAMPLES);
+  combined_alpha *= INV_SAMPLES;
 
   lowp float shadow_intensity = shadow_opacity * circle_alpha * combined_alpha;
   lowp vec3 shadow_rgb = shadow_color * shadow_intensity;
