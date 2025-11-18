@@ -6,7 +6,7 @@
   "text": {
     "effects": {
       "disketaa_directional-shadow": {
-        "name": "Направленная Тень",
+        "name": "Направленная тень",
         "description": "Создать направленную тень с регулируемым углом, масштабом и смещением для имитации падающей тени.",
         "parameters": {
           "shadow_color": {

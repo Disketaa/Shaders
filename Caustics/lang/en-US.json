@@ -1,56 +1,56 @@
 ﻿{
-  "$schema": "../../effect.lang.schema.json",
+	"$schema": "../../effect.lang.schema.json",
 
-  "languageTag": "en-US",
-  "fileDescription": "Strings for the 'Caustics' effect.",
-  "text": {
-    "effects": {
-      "disketaa_caustics": {
-        "name": "Caustics",
-        "description": "Generates a dynamic water caustic light patterns.",
-        "parameters": {
-          "color": {
-            "name": "Color",
-            "desc": "Sets the color of the caustic light patterns."
-          },
-          "speed": {
-            "name": "Speed",
-            "desc": "Adjusts the animation speed multiplier for the moving light patterns."
-          },
-          "horizontal_scale": {
-            "name": "Horizontal scale",
-            "desc": "Stretches caustics horizontally."
-          },
-          "vertical_scale": {
-            "name": "Vertical scale",
-            "desc": "Stretches caustics vertically."
-          },
-          "threshold": {
-            "name": "Threshold",
-            "desc": "Controls the minimum brightness for caustics to appear."
-          },
-          "sharpness": {
-            "name": "Sharpness",
-            "desc": "Controls the edge definition of caustic patterns."
-          },
-          "pixel_size": {
-            "name": "Pixel size",
-            "desc": "Sets pixelization strength factor."
-          },
-          "glow_intensity": {
-            "name": "Glow intensity",
-            "desc": "Creates white glow at the center of caustic lines."
-          },
-          "glow_threshold": {
-            "name": "Glow threshold",
-            "desc": "Sets the minimum value for glow to appear."
-          },
-          "opacity_variation": {
-            "name": "Opacity variation",
-            "desc": "Adds smooth opacity gradients across the caustic patterns for more natural look."
-          }
-        }
-      }
-    }
-  }
+	"languageTag": "en-US",
+	"fileDescription": "Strings for the 'Caustics' effect.",
+	"text": {
+		"effects": {
+			"disketaa_caustics": {
+				"name": "Caustics",
+				"description": "Generates a dynamic water caustic light patterns.",
+				"parameters": {
+					"color": {
+						"name": "Color",
+						"desc": "Sets the color of the caustic light patterns."
+					},
+					"speed": {
+						"name": "Speed",
+						"desc": "Adjusts the animation speed multiplier for the moving light patterns."
+					},
+					"horizontal_scale": {
+						"name": "Horizontal scale",
+						"desc": "Stretches caustics horizontally."
+					},
+					"vertical_scale": {
+						"name": "Vertical scale",
+						"desc": "Stretches caustics vertically."
+					},
+					"threshold": {
+						"name": "Threshold",
+						"desc": "Controls the minimum brightness for caustics to appear."
+					},
+					"sharpness": {
+						"name": "Sharpness",
+						"desc": "Controls the edge definition of caustic patterns."
+					},
+					"pixel_size": {
+						"name": "Pixel size",
+						"desc": "Sets pixelization strength factor."
+					},
+					"glow_intensity": {
+						"name": "Glow intensity",
+						"desc": "Creates white glow at the center of caustic lines."
+					},
+					"glow_threshold": {
+						"name": "Glow threshold",
+						"desc": "Sets the minimum value for glow to appear."
+					},
+					"opacity_variation": {
+						"name": "Opacity variation",
+						"desc": "Adds smooth opacity gradients across the caustic patterns for more natural look."
+					}
+				}
+			}
+		}
+	}
 }

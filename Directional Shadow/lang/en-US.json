@@ -1,56 +1,56 @@
-﻿{
-  "$schema": "../../effect.lang.schema.json",
+{
+	"$schema": "../../effect.lang.schema.json",
 
-  "languageTag": "en-US",
-  "fileDescription": "Strings for the 'Directional Shadow' effect.",
-  "text": {
-    "effects": {
-      "disketaa_directional-shadow": {
-        "name": "Directional Shadow",
-        "description": "Projects a directional shadow with adjustable angle, scale, and offset to simulate drop shadow.",
-        "parameters": {
-          "shadow_color": {
-            "name": "Color",
-            "desc": "Sets the color of the shadow."
-          },
-          "shadow_opacity": {
-            "name": "Opacity",
-            "desc": "Adjusts the opacity of the shadow."
-          },
-          "sharpness": {
-            "name": "Sharpness",
-            "desc": "Controls the hardness of the shadow edges."
-          },
-          "angle": {
-            "name": "Angle",
-            "desc": "Sets the rotation angle of the shadow in degrees."
-          },
-          "horizontal_center": {
-            "name": "Horizontal center",
-            "desc": "Sets the horizontal pivot point for scaling."
-          },
-          "vertical_center": {
-            "name": "Vertical center",
-            "desc": "Sets the vertical pivot point for scaling."
-          },
-          "horizontal_scale": {
-            "name": "Horizontal scale",
-            "desc": "Adjusts the horizontal scale of the shadow."
-          },
-          "vertical_scale": {
-            "name": "Vertical scale",
-            "desc": "Adjusts the vertical scale of the shadow."
-          },
-          "horizontal_offset": {
-            "name": "Horizontal offset",
-            "desc": "Sets the horizontal offset of the shadow relative to the original image."
-          },
-          "vertical_offset": {
-            "name": "Vertical offset",
-            "desc": "Sets the vertical offset of the shadow relative to the original image."
-          }
-        }
-      }
-    }
-  }
+	"languageTag": "en-US",
+	"fileDescription": "Strings for the 'Directional Shadow' effect.",
+	"text": {
+		"effects": {
+			"disketaa_directional-shadow": {
+				"name": "Directional shadow",
+				"description": "Projects a directional shadow with adjustable angle, scale, and offset to simulate drop shadow.",
+				"parameters": {
+					"shadow_color": {
+						"name": "Color",
+						"desc": "Sets the color of the shadow."
+					},
+					"shadow_opacity": {
+						"name": "Opacity",
+						"desc": "Adjusts the opacity of the shadow."
+					},
+					"sharpness": {
+						"name": "Sharpness",
+						"desc": "Controls the hardness of the shadow edges."
+					},
+					"angle": {
+						"name": "Angle",
+						"desc": "Sets the rotation angle of the shadow in degrees."
+					},
+					"horizontal_center": {
+						"name": "Horizontal center",
+						"desc": "Sets the horizontal pivot point for scaling."
+					},
+					"vertical_center": {
+						"name": "Vertical center",
+						"desc": "Sets the vertical pivot point for scaling."
+					},
+					"horizontal_scale": {
+						"name": "Horizontal scale",
+						"desc": "Adjusts the horizontal scale of the shadow."
+					},
+					"vertical_scale": {
+						"name": "Vertical scale",
+						"desc": "Adjusts the vertical scale of the shadow."
+					},
+					"horizontal_offset": {
+						"name": "Horizontal offset",
+						"desc": "Sets the horizontal offset of the shadow relative to the original image."
+					},
+					"vertical_offset": {
+						"name": "Vertical offset",
+						"desc": "Sets the vertical offset of the shadow relative to the original image."
+					}
+				}
+			}
+		}
+	}
 }

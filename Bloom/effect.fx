@@ -36,52 +36,52 @@ const highp mat2 ANGLE_MAT = mat2(-0.7373688, 0.6754904, -0.6754904, -0.7373688)
 const mediump vec3 WEIGHTS = vec3(0.2126, 0.7152, 0.0722);
 
 mediump float luminance(mediump vec3 rgb) {
-    return dot(rgb, WEIGHTS);
+  return dot(rgb, WEIGHTS);
 }
 
 mediump vec4 safeTextureSample(mediump vec2 coord) {
-    mediump vec2 clampedCoord = clamp(coord, vec2(0.001), vec2(0.999));
-    return texture2D(samplerFront, clampedCoord);
+  mediump vec2 clampedCoord = clamp(coord, vec2(0.001), vec2(0.999));
+  return texture2D(samplerFront, clampedCoord);
 }
 
 void main(void) {
-    mediump vec2 texelSize = pixelSize;
+  mediump vec2 texelSize = pixelSize;
 
-    mediump vec4 blur = vec4(0.0);
-    mediump float totalWeight = 0.0;
+  mediump vec4 blur = vec4(0.0);
+  mediump float totalWeight = 0.0;
 
-    mediump float radius = intensity * 10.0;
-    mediump float scale = radius * inversesqrt(samples);
+  mediump float radius = intensity * 10.0;
+  mediump float scale = radius * inversesqrt(samples);
 
-    highp vec2 point = vec2(scale, 0.0);
-    mediump float rad = 1.0;
+  highp vec2 point = vec2(scale, 0.0);
+  mediump float rad = 1.0;
 
-    const int MAX_SAMPLES = 64;
-    int sampleCount = int(clamp(samples, 1.0, float(MAX_SAMPLES)));
+  const int MAX_SAMPLES = 64;
+  int sampleCount = int(clamp(samples, 1.0, float(MAX_SAMPLES)));
 
-    for (int i = 0; i < MAX_SAMPLES; i++) {
-        if (i >= sampleCount) break;
+  for (int i = 0; i < MAX_SAMPLES; i++) {
+    if (i >= sampleCount) break;
 
-        point = ANGLE_MAT * point;
-        rad += 1.0 / rad;
+    point = ANGLE_MAT * point;
+    rad += 1.0 / rad;
 
-        mediump vec2 coord = vTex + point * (rad - 1.0) * texelSize;
-        mediump vec4 sampleColor = safeTextureSample(coord);
+    mediump vec2 coord = vTex + point * (rad - 1.0) * texelSize;
+    mediump vec4 sampleColor = safeTextureSample(coord);
 
-        mediump float lum = luminance(sampleColor.rgb);
-        mediump float thresholdLow = threshold;
-        mediump float thresholdHigh = threshold + falloff;
-        mediump float bloomFactor = smoothstep(thresholdLow, thresholdHigh, lum);
+    mediump float lum = luminance(sampleColor.rgb);
+    mediump float thresholdLow = threshold;
+    mediump float thresholdHigh = threshold + falloff;
+    mediump float bloomFactor = smoothstep(thresholdLow, thresholdHigh, lum);
 
-        mediump vec4 bloomSample = vec4(sampleColor.rgb * bloomFactor, bloomFactor) * brightness;
-        mediump float weight = 1.0 / rad;
+    mediump vec4 bloomSample = vec4(sampleColor.rgb * bloomFactor, bloomFactor) * brightness;
+    mediump float weight = 1.0 / rad;
 
-        blur += bloomSample * weight;
-        totalWeight += weight;
+    blur += bloomSample * weight;
+    totalWeight += weight;
     }
 
-    blur /= totalWeight;
-    mediump vec4 originalColor = texture2D(samplerFront, vTex);
+  blur /= totalWeight;
+  mediump vec4 originalColor = texture2D(samplerFront, vTex);
 
-    gl_FragColor = originalColor + blur;
+  gl_FragColor = originalColor + blur;
 }
