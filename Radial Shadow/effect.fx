@@ -54,7 +54,7 @@ void main(void) {
     return;
   }
 
-  lowp float shadow_intensity = shadow_opacity * circle_alpha * object_color.a;
+  lowp float shadow_intensity = shadow_opacity * circle_alpha;
   lowp vec3 shadow_rgb = shadow_color * shadow_intensity;
   mediump vec4 final_color = object_color + vec4(shadow_rgb, shadow_intensity) * (1.0 - object_color.a);
 
