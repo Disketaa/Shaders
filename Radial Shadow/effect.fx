@@ -30,7 +30,7 @@ void main(void) {
 
   mediump vec2 offset_uv = vTex;
   if (horizontal_offset != 0.0 || vertical_offset != 0.0) {
-    offset_uv += vec2(-horizontal_offset * pixelSize.x, vertical_offset * pixelSize.y);
+    offset_uv += vec2(-horizontal_offset * pixelSize.x, -vertical_offset * pixelSize.y);
   }
 
   mediump vec2 scale_vec = vec2(horizontal_scale, vertical_scale);
