@@ -34,7 +34,7 @@ void main() {
 
   mediump vec2 offset_coord = object_coord;
   if (horizontal_offset != 0.0 || vertical_offset != 0.0) {
-    offset_coord += vec2(-horizontal_offset, vertical_offset) * pixelSize / layerScale;
+    offset_coord += vec2(-horizontal_offset, -vertical_offset) * pixelSize / object_size;
   }
 
   mediump vec2 scaled_coord = offset_coord;

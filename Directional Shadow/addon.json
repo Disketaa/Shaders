@@ -8,7 +8,7 @@
 
   "supported-renderers": ["webgl", "webgpu"],
 
-  "version": "0.1",
+  "version": "0.2",
   "author": "Disketaa",
   "website": "https://github.com/Disketaa/Shaders/tree/main/Directional%20Shadow",
   "documentation": "https://www.construct.net/en/make-games/addons/1516/shadow/documentation",

@@ -45,7 +45,7 @@ fn main(input : FragmentInput) -> FragmentOutput {
 
   var offset_coord : vec2<f32> = object_coord;
   if (shaderParams.horizontal_offset != 0.0 || shaderParams.vertical_offset != 0.0) {
-    offset_coord = offset_coord + vec2<f32>(-shaderParams.horizontal_offset, shaderParams.vertical_offset) * pixelSize / c3Params.layerScale;
+    offset_coord = offset_coord + vec2<f32>(-shaderParams.horizontal_offset, shaderParams.vertical_offset) * pixelSize / object_size;
   }
 
   var scaled_coord : vec2<f32> = offset_coord;
